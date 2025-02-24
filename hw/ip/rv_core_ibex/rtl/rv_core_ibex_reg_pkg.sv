@@ -10,7 +10,7 @@ package rv_core_ibex_reg_pkg;
   parameter int NumSwAlerts = 2;
   parameter int NumRegions = 2;
   parameter int NumScratchWords = 8;
-  parameter int NumAlerts = 4;
+  parameter int NumAlerts = 0;
 
   // Address widths within the block
   parameter int CfgAw = 8;

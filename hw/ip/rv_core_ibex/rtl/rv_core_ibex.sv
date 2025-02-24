@@ -2,6 +2,8 @@
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
+`include "prim_assert.sv"
+
 /**
  * Ibex RISC-V core
  *
@@ -749,7 +751,7 @@ module rv_core_ibex
   assign alert_test[3] = reg2hw.alert_test.recov_hw_err.q &
                          reg2hw.alert_test.recov_hw_err.qe;
 
-  localparam bit [NumAlerts-1:0] AlertFatal = '{1'b0, 1'b1, 1'b0, 1'b1};
+  localparam bit [3:0] AlertFatal = '{1'b0, 1'b1, 1'b0, 1'b1};
 
   logic [NumAlerts-1:0] alert_events;
   logic [NumAlerts-1:0] alert_acks;

@@ -8,7 +8,7 @@ package dma_reg_pkg;
 
   // Param list
   parameter int NumIntClearSources = 11;
-  parameter int NumAlerts = 1;
+  parameter int NumAlerts = 0;
 
   // Address widths within the block
   parameter int BlockAw = 9;
