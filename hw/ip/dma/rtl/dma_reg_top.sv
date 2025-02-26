@@ -1355,32 +1355,32 @@ module dma_reg_top (
   assign reg2hw.status.error.qe = status_qe;
 
   //   F[sha2_digest_valid]: 4:4
-  prim_subreg #(
-    .DW      (1),
-    .SwAccess(prim_subreg_pkg::SwAccessRO),
-    .RESVAL  (1'h0),
-    .Mubi    (1'b0)
-  ) u_status_sha2_digest_valid (
-    .clk_i   (clk_i),
-    .rst_ni  (rst_ni),
+  // prim_subreg #(
+  //   .DW      (1),
+  //   .SwAccess(prim_subreg_pkg::SwAccessRO),
+  //   .RESVAL  (1'h0),
+  //   .Mubi    (1'b0)
+  // ) u_status_sha2_digest_valid (
+  //   .clk_i   (clk_i),
+  //   .rst_ni  (rst_ni),
 
-    // from register interface
-    .we     (1'b0),
-    .wd     ('0),
+  //   // from register interface
+  //   .we     (1'b0),
+  //   .wd     ('0),
 
-    // from internal hardware
-    .de     (hw2reg.status.sha2_digest_valid.de),
-    .d      (hw2reg.status.sha2_digest_valid.d),
+  //   // from internal hardware
+  //   .de     (hw2reg.status.sha2_digest_valid.de),
+  //   .d      (hw2reg.status.sha2_digest_valid.d),
 
-    // to internal hardware
-    .qe     (status_flds_we[4]),
-    .q      (reg2hw.status.sha2_digest_valid.q),
-    .ds     (),
+  //   // to internal hardware
+  //   .qe     (status_flds_we[4]),
+  //   .q      (reg2hw.status.sha2_digest_valid.q),
+  //   .ds     (),
 
-    // to register interface (read)
-    .qs     (status_sha2_digest_valid_qs)
-  );
-  assign reg2hw.status.sha2_digest_valid.qe = status_qe;
+  //   // to register interface (read)
+  //   .qs     (status_sha2_digest_valid_qs)
+  // );
+  // assign reg2hw.status.sha2_digest_valid.qe = status_qe;
 
   //   F[chunk_done]: 5:5
   prim_subreg #(
@@ -1601,495 +1601,495 @@ module dma_reg_top (
   );
 
   //   F[asid_error]: 7:7
-  prim_subreg #(
-    .DW      (1),
-    .SwAccess(prim_subreg_pkg::SwAccessRO),
-    .RESVAL  (1'h0),
-    .Mubi    (1'b0)
-  ) u_error_code_asid_error (
-    .clk_i   (clk_i),
-    .rst_ni  (rst_ni),
+  // prim_subreg #(
+  //   .DW      (1),
+  //   .SwAccess(prim_subreg_pkg::SwAccessRO),
+  //   .RESVAL  (1'h0),
+  //   .Mubi    (1'b0)
+  // ) u_error_code_asid_error (
+  //   .clk_i   (clk_i),
+  //   .rst_ni  (rst_ni),
 
-    // from register interface
-    .we     (1'b0),
-    .wd     ('0),
+  //   // from register interface
+  //   .we     (1'b0),
+  //   .wd     ('0),
 
-    // from internal hardware
-    .de     (hw2reg.error_code.asid_error.de),
-    .d      (hw2reg.error_code.asid_error.d),
+  //   // from internal hardware
+  //   .de     (hw2reg.error_code.asid_error.de),
+  //   .d      (hw2reg.error_code.asid_error.d),
 
-    // to internal hardware
-    .qe     (),
-    .q      (),
-    .ds     (),
+  //   // to internal hardware
+  //   .qe     (),
+  //   .q      (),
+  //   .ds     (),
 
-    // to register interface (read)
-    .qs     (error_code_asid_error_qs)
-  );
+  //   // to register interface (read)
+  //   .qs     (error_code_asid_error_qs)
+  // );
 
 
   // Subregister 0 of Multireg sha2_digest
   // R[sha2_digest_0]: V(False)
-  prim_subreg #(
-    .DW      (32),
-    .SwAccess(prim_subreg_pkg::SwAccessRO),
-    .RESVAL  (32'h0),
-    .Mubi    (1'b0)
-  ) u_sha2_digest_0 (
-    .clk_i   (clk_i),
-    .rst_ni  (rst_ni),
+  // prim_subreg #(
+  //   .DW      (32),
+  //   .SwAccess(prim_subreg_pkg::SwAccessRO),
+  //   .RESVAL  (32'h0),
+  //   .Mubi    (1'b0)
+  // ) u_sha2_digest_0 (
+  //   .clk_i   (clk_i),
+  //   .rst_ni  (rst_ni),
 
-    // from register interface
-    .we     (1'b0),
-    .wd     ('0),
+  //   // from register interface
+  //   .we     (1'b0),
+  //   .wd     ('0),
 
-    // from internal hardware
-    .de     (hw2reg.sha2_digest[0].de),
-    .d      (hw2reg.sha2_digest[0].d),
+  //   // from internal hardware
+  //   .de     (hw2reg.sha2_digest[0].de),
+  //   .d      (hw2reg.sha2_digest[0].d),
 
-    // to internal hardware
-    .qe     (),
-    .q      (),
-    .ds     (),
+  //   // to internal hardware
+  //   .qe     (),
+  //   .q      (),
+  //   .ds     (),
 
-    // to register interface (read)
-    .qs     (sha2_digest_0_qs)
-  );
+  //   // to register interface (read)
+  //   .qs     (sha2_digest_0_qs)
+  // );
 
 
   // Subregister 1 of Multireg sha2_digest
   // R[sha2_digest_1]: V(False)
-  prim_subreg #(
-    .DW      (32),
-    .SwAccess(prim_subreg_pkg::SwAccessRO),
-    .RESVAL  (32'h0),
-    .Mubi    (1'b0)
-  ) u_sha2_digest_1 (
-    .clk_i   (clk_i),
-    .rst_ni  (rst_ni),
+  // prim_subreg #(
+  //   .DW      (32),
+  //   .SwAccess(prim_subreg_pkg::SwAccessRO),
+  //   .RESVAL  (32'h0),
+  //   .Mubi    (1'b0)
+  // ) u_sha2_digest_1 (
+  //   .clk_i   (clk_i),
+  //   .rst_ni  (rst_ni),
 
-    // from register interface
-    .we     (1'b0),
-    .wd     ('0),
+  //   // from register interface
+  //   .we     (1'b0),
+  //   .wd     ('0),
 
-    // from internal hardware
-    .de     (hw2reg.sha2_digest[1].de),
-    .d      (hw2reg.sha2_digest[1].d),
+  //   // from internal hardware
+  //   .de     (hw2reg.sha2_digest[1].de),
+  //   .d      (hw2reg.sha2_digest[1].d),
 
-    // to internal hardware
-    .qe     (),
-    .q      (),
-    .ds     (),
+  //   // to internal hardware
+  //   .qe     (),
+  //   .q      (),
+  //   .ds     (),
 
-    // to register interface (read)
-    .qs     (sha2_digest_1_qs)
-  );
+  //   // to register interface (read)
+  //   .qs     (sha2_digest_1_qs)
+  // );
 
 
   // Subregister 2 of Multireg sha2_digest
   // R[sha2_digest_2]: V(False)
-  prim_subreg #(
-    .DW      (32),
-    .SwAccess(prim_subreg_pkg::SwAccessRO),
-    .RESVAL  (32'h0),
-    .Mubi    (1'b0)
-  ) u_sha2_digest_2 (
-    .clk_i   (clk_i),
-    .rst_ni  (rst_ni),
+  // prim_subreg #(
+  //   .DW      (32),
+  //   .SwAccess(prim_subreg_pkg::SwAccessRO),
+  //   .RESVAL  (32'h0),
+  //   .Mubi    (1'b0)
+  // ) u_sha2_digest_2 (
+  //   .clk_i   (clk_i),
+  //   .rst_ni  (rst_ni),
 
-    // from register interface
-    .we     (1'b0),
-    .wd     ('0),
+  //   // from register interface
+  //   .we     (1'b0),
+  //   .wd     ('0),
 
-    // from internal hardware
-    .de     (hw2reg.sha2_digest[2].de),
-    .d      (hw2reg.sha2_digest[2].d),
+  //   // from internal hardware
+  //   .de     (hw2reg.sha2_digest[2].de),
+  //   .d      (hw2reg.sha2_digest[2].d),
 
-    // to internal hardware
-    .qe     (),
-    .q      (),
-    .ds     (),
+  //   // to internal hardware
+  //   .qe     (),
+  //   .q      (),
+  //   .ds     (),
 
-    // to register interface (read)
-    .qs     (sha2_digest_2_qs)
-  );
+  //   // to register interface (read)
+  //   .qs     (sha2_digest_2_qs)
+  // );
 
 
   // Subregister 3 of Multireg sha2_digest
   // R[sha2_digest_3]: V(False)
-  prim_subreg #(
-    .DW      (32),
-    .SwAccess(prim_subreg_pkg::SwAccessRO),
-    .RESVAL  (32'h0),
-    .Mubi    (1'b0)
-  ) u_sha2_digest_3 (
-    .clk_i   (clk_i),
-    .rst_ni  (rst_ni),
+  // prim_subreg #(
+  //   .DW      (32),
+  //   .SwAccess(prim_subreg_pkg::SwAccessRO),
+  //   .RESVAL  (32'h0),
+  //   .Mubi    (1'b0)
+  // ) u_sha2_digest_3 (
+  //   .clk_i   (clk_i),
+  //   .rst_ni  (rst_ni),
 
-    // from register interface
-    .we     (1'b0),
-    .wd     ('0),
+  //   // from register interface
+  //   .we     (1'b0),
+  //   .wd     ('0),
 
-    // from internal hardware
-    .de     (hw2reg.sha2_digest[3].de),
-    .d      (hw2reg.sha2_digest[3].d),
+  //   // from internal hardware
+  //   .de     (hw2reg.sha2_digest[3].de),
+  //   .d      (hw2reg.sha2_digest[3].d),
 
-    // to internal hardware
-    .qe     (),
-    .q      (),
-    .ds     (),
+  //   // to internal hardware
+  //   .qe     (),
+  //   .q      (),
+  //   .ds     (),
 
-    // to register interface (read)
-    .qs     (sha2_digest_3_qs)
-  );
+  //   // to register interface (read)
+  //   .qs     (sha2_digest_3_qs)
+  // );
 
 
   // Subregister 4 of Multireg sha2_digest
   // R[sha2_digest_4]: V(False)
-  prim_subreg #(
-    .DW      (32),
-    .SwAccess(prim_subreg_pkg::SwAccessRO),
-    .RESVAL  (32'h0),
-    .Mubi    (1'b0)
-  ) u_sha2_digest_4 (
-    .clk_i   (clk_i),
-    .rst_ni  (rst_ni),
+  // prim_subreg #(
+  //   .DW      (32),
+  //   .SwAccess(prim_subreg_pkg::SwAccessRO),
+  //   .RESVAL  (32'h0),
+  //   .Mubi    (1'b0)
+  // ) u_sha2_digest_4 (
+  //   .clk_i   (clk_i),
+  //   .rst_ni  (rst_ni),
 
-    // from register interface
-    .we     (1'b0),
-    .wd     ('0),
+  //   // from register interface
+  //   .we     (1'b0),
+  //   .wd     ('0),
 
-    // from internal hardware
-    .de     (hw2reg.sha2_digest[4].de),
-    .d      (hw2reg.sha2_digest[4].d),
+  //   // from internal hardware
+  //   .de     (hw2reg.sha2_digest[4].de),
+  //   .d      (hw2reg.sha2_digest[4].d),
 
-    // to internal hardware
-    .qe     (),
-    .q      (),
-    .ds     (),
+  //   // to internal hardware
+  //   .qe     (),
+  //   .q      (),
+  //   .ds     (),
 
-    // to register interface (read)
-    .qs     (sha2_digest_4_qs)
-  );
+  //   // to register interface (read)
+  //   .qs     (sha2_digest_4_qs)
+  // );
 
 
   // Subregister 5 of Multireg sha2_digest
   // R[sha2_digest_5]: V(False)
-  prim_subreg #(
-    .DW      (32),
-    .SwAccess(prim_subreg_pkg::SwAccessRO),
-    .RESVAL  (32'h0),
-    .Mubi    (1'b0)
-  ) u_sha2_digest_5 (
-    .clk_i   (clk_i),
-    .rst_ni  (rst_ni),
+  // prim_subreg #(
+  //   .DW      (32),
+  //   .SwAccess(prim_subreg_pkg::SwAccessRO),
+  //   .RESVAL  (32'h0),
+  //   .Mubi    (1'b0)
+  // ) u_sha2_digest_5 (
+  //   .clk_i   (clk_i),
+  //   .rst_ni  (rst_ni),
 
-    // from register interface
-    .we     (1'b0),
-    .wd     ('0),
+  //   // from register interface
+  //   .we     (1'b0),
+  //   .wd     ('0),
 
-    // from internal hardware
-    .de     (hw2reg.sha2_digest[5].de),
-    .d      (hw2reg.sha2_digest[5].d),
+  //   // from internal hardware
+  //   .de     (hw2reg.sha2_digest[5].de),
+  //   .d      (hw2reg.sha2_digest[5].d),
 
-    // to internal hardware
-    .qe     (),
-    .q      (),
-    .ds     (),
+  //   // to internal hardware
+  //   .qe     (),
+  //   .q      (),
+  //   .ds     (),
 
-    // to register interface (read)
-    .qs     (sha2_digest_5_qs)
-  );
+  //   // to register interface (read)
+  //   .qs     (sha2_digest_5_qs)
+  // );
 
 
   // Subregister 6 of Multireg sha2_digest
   // R[sha2_digest_6]: V(False)
-  prim_subreg #(
-    .DW      (32),
-    .SwAccess(prim_subreg_pkg::SwAccessRO),
-    .RESVAL  (32'h0),
-    .Mubi    (1'b0)
-  ) u_sha2_digest_6 (
-    .clk_i   (clk_i),
-    .rst_ni  (rst_ni),
+  // prim_subreg #(
+  //   .DW      (32),
+  //   .SwAccess(prim_subreg_pkg::SwAccessRO),
+  //   .RESVAL  (32'h0),
+  //   .Mubi    (1'b0)
+  // ) u_sha2_digest_6 (
+  //   .clk_i   (clk_i),
+  //   .rst_ni  (rst_ni),
 
-    // from register interface
-    .we     (1'b0),
-    .wd     ('0),
+  //   // from register interface
+  //   .we     (1'b0),
+  //   .wd     ('0),
 
-    // from internal hardware
-    .de     (hw2reg.sha2_digest[6].de),
-    .d      (hw2reg.sha2_digest[6].d),
+  //   // from internal hardware
+  //   .de     (hw2reg.sha2_digest[6].de),
+  //   .d      (hw2reg.sha2_digest[6].d),
 
-    // to internal hardware
-    .qe     (),
-    .q      (),
-    .ds     (),
+  //   // to internal hardware
+  //   .qe     (),
+  //   .q      (),
+  //   .ds     (),
 
-    // to register interface (read)
-    .qs     (sha2_digest_6_qs)
-  );
+  //   // to register interface (read)
+  //   .qs     (sha2_digest_6_qs)
+  // );
 
 
   // Subregister 7 of Multireg sha2_digest
   // R[sha2_digest_7]: V(False)
-  prim_subreg #(
-    .DW      (32),
-    .SwAccess(prim_subreg_pkg::SwAccessRO),
-    .RESVAL  (32'h0),
-    .Mubi    (1'b0)
-  ) u_sha2_digest_7 (
-    .clk_i   (clk_i),
-    .rst_ni  (rst_ni),
+  // prim_subreg #(
+  //   .DW      (32),
+  //   .SwAccess(prim_subreg_pkg::SwAccessRO),
+  //   .RESVAL  (32'h0),
+  //   .Mubi    (1'b0)
+  // ) u_sha2_digest_7 (
+  //   .clk_i   (clk_i),
+  //   .rst_ni  (rst_ni),
 
-    // from register interface
-    .we     (1'b0),
-    .wd     ('0),
+  //   // from register interface
+  //   .we     (1'b0),
+  //   .wd     ('0),
 
-    // from internal hardware
-    .de     (hw2reg.sha2_digest[7].de),
-    .d      (hw2reg.sha2_digest[7].d),
+  //   // from internal hardware
+  //   .de     (hw2reg.sha2_digest[7].de),
+  //   .d      (hw2reg.sha2_digest[7].d),
 
-    // to internal hardware
-    .qe     (),
-    .q      (),
-    .ds     (),
+  //   // to internal hardware
+  //   .qe     (),
+  //   .q      (),
+  //   .ds     (),
 
-    // to register interface (read)
-    .qs     (sha2_digest_7_qs)
-  );
+  //   // to register interface (read)
+  //   .qs     (sha2_digest_7_qs)
+  // );
 
 
   // Subregister 8 of Multireg sha2_digest
   // R[sha2_digest_8]: V(False)
-  prim_subreg #(
-    .DW      (32),
-    .SwAccess(prim_subreg_pkg::SwAccessRO),
-    .RESVAL  (32'h0),
-    .Mubi    (1'b0)
-  ) u_sha2_digest_8 (
-    .clk_i   (clk_i),
-    .rst_ni  (rst_ni),
+  // prim_subreg #(
+  //   .DW      (32),
+  //   .SwAccess(prim_subreg_pkg::SwAccessRO),
+  //   .RESVAL  (32'h0),
+  //   .Mubi    (1'b0)
+  // ) u_sha2_digest_8 (
+  //   .clk_i   (clk_i),
+  //   .rst_ni  (rst_ni),
 
-    // from register interface
-    .we     (1'b0),
-    .wd     ('0),
+  //   // from register interface
+  //   .we     (1'b0),
+  //   .wd     ('0),
 
-    // from internal hardware
-    .de     (hw2reg.sha2_digest[8].de),
-    .d      (hw2reg.sha2_digest[8].d),
+  //   // from internal hardware
+  //   .de     (hw2reg.sha2_digest[8].de),
+  //   .d      (hw2reg.sha2_digest[8].d),
 
-    // to internal hardware
-    .qe     (),
-    .q      (),
-    .ds     (),
+  //   // to internal hardware
+  //   .qe     (),
+  //   .q      (),
+  //   .ds     (),
 
-    // to register interface (read)
-    .qs     (sha2_digest_8_qs)
-  );
+  //   // to register interface (read)
+  //   .qs     (sha2_digest_8_qs)
+  // );
 
 
   // Subregister 9 of Multireg sha2_digest
   // R[sha2_digest_9]: V(False)
-  prim_subreg #(
-    .DW      (32),
-    .SwAccess(prim_subreg_pkg::SwAccessRO),
-    .RESVAL  (32'h0),
-    .Mubi    (1'b0)
-  ) u_sha2_digest_9 (
-    .clk_i   (clk_i),
-    .rst_ni  (rst_ni),
+  // prim_subreg #(
+  //   .DW      (32),
+  //   .SwAccess(prim_subreg_pkg::SwAccessRO),
+  //   .RESVAL  (32'h0),
+  //   .Mubi    (1'b0)
+  // ) u_sha2_digest_9 (
+  //   .clk_i   (clk_i),
+  //   .rst_ni  (rst_ni),
 
-    // from register interface
-    .we     (1'b0),
-    .wd     ('0),
+  //   // from register interface
+  //   .we     (1'b0),
+  //   .wd     ('0),
 
-    // from internal hardware
-    .de     (hw2reg.sha2_digest[9].de),
-    .d      (hw2reg.sha2_digest[9].d),
+  //   // from internal hardware
+  //   .de     (hw2reg.sha2_digest[9].de),
+  //   .d      (hw2reg.sha2_digest[9].d),
 
-    // to internal hardware
-    .qe     (),
-    .q      (),
-    .ds     (),
+  //   // to internal hardware
+  //   .qe     (),
+  //   .q      (),
+  //   .ds     (),
 
-    // to register interface (read)
-    .qs     (sha2_digest_9_qs)
-  );
+  //   // to register interface (read)
+  //   .qs     (sha2_digest_9_qs)
+  // );
 
 
   // Subregister 10 of Multireg sha2_digest
   // R[sha2_digest_10]: V(False)
-  prim_subreg #(
-    .DW      (32),
-    .SwAccess(prim_subreg_pkg::SwAccessRO),
-    .RESVAL  (32'h0),
-    .Mubi    (1'b0)
-  ) u_sha2_digest_10 (
-    .clk_i   (clk_i),
-    .rst_ni  (rst_ni),
+  // prim_subreg #(
+  //   .DW      (32),
+  //   .SwAccess(prim_subreg_pkg::SwAccessRO),
+  //   .RESVAL  (32'h0),
+  //   .Mubi    (1'b0)
+  // ) u_sha2_digest_10 (
+  //   .clk_i   (clk_i),
+  //   .rst_ni  (rst_ni),
 
-    // from register interface
-    .we     (1'b0),
-    .wd     ('0),
+  //   // from register interface
+  //   .we     (1'b0),
+  //   .wd     ('0),
 
-    // from internal hardware
-    .de     (hw2reg.sha2_digest[10].de),
-    .d      (hw2reg.sha2_digest[10].d),
+  //   // from internal hardware
+  //   .de     (hw2reg.sha2_digest[10].de),
+  //   .d      (hw2reg.sha2_digest[10].d),
 
-    // to internal hardware
-    .qe     (),
-    .q      (),
-    .ds     (),
+  //   // to internal hardware
+  //   .qe     (),
+  //   .q      (),
+  //   .ds     (),
 
-    // to register interface (read)
-    .qs     (sha2_digest_10_qs)
-  );
+  //   // to register interface (read)
+  //   .qs     (sha2_digest_10_qs)
+  // );
 
 
   // Subregister 11 of Multireg sha2_digest
   // R[sha2_digest_11]: V(False)
-  prim_subreg #(
-    .DW      (32),
-    .SwAccess(prim_subreg_pkg::SwAccessRO),
-    .RESVAL  (32'h0),
-    .Mubi    (1'b0)
-  ) u_sha2_digest_11 (
-    .clk_i   (clk_i),
-    .rst_ni  (rst_ni),
+  // prim_subreg #(
+  //   .DW      (32),
+  //   .SwAccess(prim_subreg_pkg::SwAccessRO),
+  //   .RESVAL  (32'h0),
+  //   .Mubi    (1'b0)
+  // ) u_sha2_digest_11 (
+  //   .clk_i   (clk_i),
+  //   .rst_ni  (rst_ni),
 
-    // from register interface
-    .we     (1'b0),
-    .wd     ('0),
+  //   // from register interface
+  //   .we     (1'b0),
+  //   .wd     ('0),
 
-    // from internal hardware
-    .de     (hw2reg.sha2_digest[11].de),
-    .d      (hw2reg.sha2_digest[11].d),
+  //   // from internal hardware
+  //   .de     (hw2reg.sha2_digest[11].de),
+  //   .d      (hw2reg.sha2_digest[11].d),
 
-    // to internal hardware
-    .qe     (),
-    .q      (),
-    .ds     (),
+  //   // to internal hardware
+  //   .qe     (),
+  //   .q      (),
+  //   .ds     (),
 
-    // to register interface (read)
-    .qs     (sha2_digest_11_qs)
-  );
+  //   // to register interface (read)
+  //   .qs     (sha2_digest_11_qs)
+  // );
 
 
   // Subregister 12 of Multireg sha2_digest
   // R[sha2_digest_12]: V(False)
-  prim_subreg #(
-    .DW      (32),
-    .SwAccess(prim_subreg_pkg::SwAccessRO),
-    .RESVAL  (32'h0),
-    .Mubi    (1'b0)
-  ) u_sha2_digest_12 (
-    .clk_i   (clk_i),
-    .rst_ni  (rst_ni),
+  // prim_subreg #(
+  //   .DW      (32),
+  //   .SwAccess(prim_subreg_pkg::SwAccessRO),
+  //   .RESVAL  (32'h0),
+  //   .Mubi    (1'b0)
+  // ) u_sha2_digest_12 (
+  //   .clk_i   (clk_i),
+  //   .rst_ni  (rst_ni),
 
-    // from register interface
-    .we     (1'b0),
-    .wd     ('0),
+  //   // from register interface
+  //   .we     (1'b0),
+  //   .wd     ('0),
 
-    // from internal hardware
-    .de     (hw2reg.sha2_digest[12].de),
-    .d      (hw2reg.sha2_digest[12].d),
+  //   // from internal hardware
+  //   .de     (hw2reg.sha2_digest[12].de),
+  //   .d      (hw2reg.sha2_digest[12].d),
 
-    // to internal hardware
-    .qe     (),
-    .q      (),
-    .ds     (),
+  //   // to internal hardware
+  //   .qe     (),
+  //   .q      (),
+  //   .ds     (),
 
-    // to register interface (read)
-    .qs     (sha2_digest_12_qs)
-  );
+  //   // to register interface (read)
+  //   .qs     (sha2_digest_12_qs)
+  // );
 
 
   // Subregister 13 of Multireg sha2_digest
   // R[sha2_digest_13]: V(False)
-  prim_subreg #(
-    .DW      (32),
-    .SwAccess(prim_subreg_pkg::SwAccessRO),
-    .RESVAL  (32'h0),
-    .Mubi    (1'b0)
-  ) u_sha2_digest_13 (
-    .clk_i   (clk_i),
-    .rst_ni  (rst_ni),
+  // prim_subreg #(
+  //   .DW      (32),
+  //   .SwAccess(prim_subreg_pkg::SwAccessRO),
+  //   .RESVAL  (32'h0),
+  //   .Mubi    (1'b0)
+  // ) u_sha2_digest_13 (
+  //   .clk_i   (clk_i),
+  //   .rst_ni  (rst_ni),
 
-    // from register interface
-    .we     (1'b0),
-    .wd     ('0),
+  //   // from register interface
+  //   .we     (1'b0),
+  //   .wd     ('0),
 
-    // from internal hardware
-    .de     (hw2reg.sha2_digest[13].de),
-    .d      (hw2reg.sha2_digest[13].d),
+  //   // from internal hardware
+  //   .de     (hw2reg.sha2_digest[13].de),
+  //   .d      (hw2reg.sha2_digest[13].d),
 
-    // to internal hardware
-    .qe     (),
-    .q      (),
-    .ds     (),
+  //   // to internal hardware
+  //   .qe     (),
+  //   .q      (),
+  //   .ds     (),
 
-    // to register interface (read)
-    .qs     (sha2_digest_13_qs)
-  );
+  //   // to register interface (read)
+  //   .qs     (sha2_digest_13_qs)
+  // );
 
 
   // Subregister 14 of Multireg sha2_digest
   // R[sha2_digest_14]: V(False)
-  prim_subreg #(
-    .DW      (32),
-    .SwAccess(prim_subreg_pkg::SwAccessRO),
-    .RESVAL  (32'h0),
-    .Mubi    (1'b0)
-  ) u_sha2_digest_14 (
-    .clk_i   (clk_i),
-    .rst_ni  (rst_ni),
+  // prim_subreg #(
+  //   .DW      (32),
+  //   .SwAccess(prim_subreg_pkg::SwAccessRO),
+  //   .RESVAL  (32'h0),
+  //   .Mubi    (1'b0)
+  // ) u_sha2_digest_14 (
+  //   .clk_i   (clk_i),
+  //   .rst_ni  (rst_ni),
 
-    // from register interface
-    .we     (1'b0),
-    .wd     ('0),
+  //   // from register interface
+  //   .we     (1'b0),
+  //   .wd     ('0),
 
-    // from internal hardware
-    .de     (hw2reg.sha2_digest[14].de),
-    .d      (hw2reg.sha2_digest[14].d),
+  //   // from internal hardware
+  //   .de     (hw2reg.sha2_digest[14].de),
+  //   .d      (hw2reg.sha2_digest[14].d),
 
-    // to internal hardware
-    .qe     (),
-    .q      (),
-    .ds     (),
+  //   // to internal hardware
+  //   .qe     (),
+  //   .q      (),
+  //   .ds     (),
 
-    // to register interface (read)
-    .qs     (sha2_digest_14_qs)
-  );
+  //   // to register interface (read)
+  //   .qs     (sha2_digest_14_qs)
+  // );
 
 
   // Subregister 15 of Multireg sha2_digest
   // R[sha2_digest_15]: V(False)
-  prim_subreg #(
-    .DW      (32),
-    .SwAccess(prim_subreg_pkg::SwAccessRO),
-    .RESVAL  (32'h0),
-    .Mubi    (1'b0)
-  ) u_sha2_digest_15 (
-    .clk_i   (clk_i),
-    .rst_ni  (rst_ni),
+  // prim_subreg #(
+  //   .DW      (32),
+  //   .SwAccess(prim_subreg_pkg::SwAccessRO),
+  //   .RESVAL  (32'h0),
+  //   .Mubi    (1'b0)
+  // ) u_sha2_digest_15 (
+  //   .clk_i   (clk_i),
+  //   .rst_ni  (rst_ni),
 
-    // from register interface
-    .we     (1'b0),
-    .wd     ('0),
+  //   // from register interface
+  //   .we     (1'b0),
+  //   .wd     ('0),
 
-    // from internal hardware
-    .de     (hw2reg.sha2_digest[15].de),
-    .d      (hw2reg.sha2_digest[15].d),
+  //   // from internal hardware
+  //   .de     (hw2reg.sha2_digest[15].de),
+  //   .d      (hw2reg.sha2_digest[15].d),
 
-    // to internal hardware
-    .qe     (),
-    .q      (),
-    .ds     (),
+  //   // to internal hardware
+  //   .qe     (),
+  //   .q      (),
+  //   .ds     (),
 
-    // to register interface (read)
-    .qs     (sha2_digest_15_qs)
-  );
+  //   // to register interface (read)
+  //   .qs     (sha2_digest_15_qs)
+  // );
 
 
   // R[handshake_intr_enable]: V(False)

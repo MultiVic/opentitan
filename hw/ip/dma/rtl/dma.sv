@@ -140,14 +140,15 @@ module dma
                         (ctrl_state_q != DmaIdle) ||
                         sw_reg_wr_extended;
 
-  prim_clock_gating #(
-    .FpgaBufGlobal(1'b0) // Instantiate a local instead of a global clock buffer on FPGAs
-  ) dma_clk_gate (
-    .clk_i    ( clk_i        ),
-    .en_i     ( gated_clk_en ),
-    .test_en_i( scanmode     ),     ///< Test On to turn off the clock gating during test
-    .clk_o    ( gated_clk    )
-  );
+  // prim_clock_gating #(
+  //   .FpgaBufGlobal(1'b0) // Instantiate a local instead of a global clock buffer on FPGAs
+  // ) dma_clk_gate (
+  //   .clk_i    ( clk_i        ),
+  //   .en_i     ( gated_clk_en ),
+  //   .test_en_i( scanmode     ),     ///< Test On to turn off the clock gating during test
+  //   .clk_o    ( gated_clk    )
+  // );
+  assign gated_clk = clk_i;
 
   logic reg_intg_error;
   // SEC_CM: BUS.INTEGRITY
@@ -439,30 +440,30 @@ module dma
     endcase
   end
 
-  // SHA2 engine for inline hashing operations
-  prim_sha2_32 #(.MultimodeEn(1)) u_sha2 (
-    .clk_i              ( clk_i                 ),
-    .rst_ni             ( rst_ni                ),
-    .wipe_secret_i      ( 1'b0                  ),
-    .wipe_v_i           ( 32'b0                 ),
-    .fifo_rvalid_i      ( sha2_valid            ),
-    .fifo_rdata_i       ( sha2_data             ),
-    .fifo_rready_o      ( sha2_ready            ),
-    .sha_en_i           ( 1'b1                  ),
-    .hash_start_i       ( sha2_hash_start       ),
-    .hash_stop_i        ( 1'b0                  ),
-    .hash_continue_i    ( 1'b0                  ),
-    .digest_mode_i      ( sha2_mode             ),
-    .hash_process_i     ( sha2_hash_process     ),
-    .hash_done_o        ( sha2_hash_done        ),
-    .message_length_i   ( sha2_message_len_bits ),
-    .digest_i           ( '0                    ),
-    .digest_we_i        ( '0                    ),
-    .digest_o           ( sha2_digest           ),
-    .digest_on_blk_o    (                       ),
-    .hash_running_o     (                       ),
-    .idle_o             (                       )
-  );
+  // // SHA2 engine for inline hashing operations
+  // prim_sha2_32 #(.MultimodeEn(1)) u_sha2 (
+  //   .clk_i              ( clk_i                 ),
+  //   .rst_ni             ( rst_ni                ),
+  //   .wipe_secret_i      ( 1'b0                  ),
+  //   .wipe_v_i           ( 32'b0                 ),
+  //   .fifo_rvalid_i      ( sha2_valid            ),
+  //   .fifo_rdata_i       ( sha2_data             ),
+  //   .fifo_rready_o      ( sha2_ready            ),
+  //   .sha_en_i           ( 1'b1                  ),
+  //   .hash_start_i       ( sha2_hash_start       ),
+  //   .hash_stop_i        ( 1'b0                  ),
+  //   .hash_continue_i    ( 1'b0                  ),
+  //   .digest_mode_i      ( sha2_mode             ),
+  //   .hash_process_i     ( sha2_hash_process     ),
+  //   .hash_done_o        ( sha2_hash_done        ),
+  //   .message_length_i   ( sha2_message_len_bits ),
+  //   .digest_i           ( '0                    ),
+  //   .digest_we_i        ( '0                    ),
+  //   .digest_o           ( sha2_digest           ),
+  //   .digest_on_blk_o    (                       ),
+  //   .hash_running_o     (                       ),
+  //   .idle_o             (                       )
+  // );
 
   // Fiddle ASIDs out for better readability during the rest of the code
   logic [ASID_WIDTH-1:0] src_asid, dst_asid;
