@@ -9,7 +9,6 @@ module dma
   import dma_pkg::*;
   import dma_reg_pkg::*;
 #(
-    parameter logic [NumAlerts-1:0]      AlertAsyncOn           = {NumAlerts{1'b1}},
     parameter bit                        EnableDataIntgGen      = 1'b1,
     parameter bit                        EnableRspDataIntgCheck = 1'b1,
     parameter logic [RsvdWidth-1:0]      TlUserRsvd             = '0,
@@ -24,9 +23,6 @@ module dma
   output  logic                                     intr_dma_chunk_done_o,
   output  logic                                     intr_dma_error_o,
   input   lsio_trigger_t                            lsio_trigger_i,
-  // Alerts
-  input  prim_alert_pkg::alert_rx_t [NumAlerts-1:0] alert_rx_i,
-  output prim_alert_pkg::alert_tx_t [NumAlerts-1:0] alert_tx_o,
   // Device port
   input   tlul_pkg::tl_h2d_t                        tl_d_i,
   output  tlul_pkg::tl_d2h_t                        tl_d_o,
@@ -162,30 +158,6 @@ module dma
     .hw2reg    ( hw2reg         ),
     .intg_err_o( reg_intg_error )
   );
-
-  // Alerts
-  logic [NumAlerts-1:0] alert_test, alerts;
-  assign alert_test = {reg2hw.alert_test.q & reg2hw.alert_test.qe};
-  assign alerts[0]  = reg_intg_error              ||
-                      dma_host_tlul_rsp_intg_err  ||
-                      dma_ctn_tlul_rsp_intg_err   ||
-                      dma_state_error;
-
-  for (genvar i = 0; i < NumAlerts; i++) begin : gen_alert_tx
-    prim_alert_sender #(
-      .AsyncOn(AlertAsyncOn[i]),
-      .IsFatal(1'b1)
-    ) u_prim_alert_sender (
-      .clk_i,
-      .rst_ni,
-      .alert_test_i (alert_test[i]),
-      .alert_req_i  (alerts[i]),
-      .alert_ack_o  (),
-      .alert_state_o(),
-      .alert_rx_i   (alert_rx_i[i]),
-      .alert_tx_o   (alert_tx_o[i])
-    );
-  end
 
   // Adapter from the DMA to Host
   tlul_adapter_host #(
@@ -1526,12 +1498,6 @@ module dma
   //////////////////////////////////////////////////////////////////////////////
   // Assertions
   //////////////////////////////////////////////////////////////////////////////
-
-  // All outputs should be known value after reset
-  `ASSERT_KNOWN(AlertsKnown_A, alert_tx_o)
-
-  // Alert assertions for reg_we onehot check
-  `ASSERT_PRIM_REG_WE_ONEHOT_ERROR_TRIGGER_ALERT(RegWeOnehotCheck_A, u_dma_reg, alert_tx_o[0])
 
   // Handshake interrupt enable register must be expanded if there are more than 32 handshake
   // trigger wires
