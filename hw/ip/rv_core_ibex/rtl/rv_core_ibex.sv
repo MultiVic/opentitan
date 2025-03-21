@@ -14,7 +14,6 @@ module rv_core_ibex
   import rv_core_ibex_pkg::*;
   import rv_core_ibex_reg_pkg::*;
 #(
-  parameter logic [NumAlerts-1:0]   AlertAsyncOn     = {NumAlerts{1'b1}},
   parameter bit                     PMPEnable        = 1'b1,
   parameter int unsigned            PMPGranularity   = 0,
   parameter int unsigned            PMPNumRegions    = 16,
@@ -113,12 +112,7 @@ module rv_core_ibex
   input  otp_ctrl_pkg::sram_otp_key_rsp_t icache_otp_key_i,
 
   // fpga build info
-  input [31:0] fpga_info_i,
-
-  // interrupts and alerts
-  input  prim_alert_pkg::alert_rx_t [NumAlerts-1:0] alert_rx_i,
-  output prim_alert_pkg::alert_tx_t [NumAlerts-1:0] alert_tx_o
-
+  input [31:0] fpga_info_i
 );
 
   import top_pkg::*;
@@ -264,8 +258,6 @@ module rv_core_ibex
     .q_o(wdog_irq_nm)
   );
 
-  assign hw2reg.nmi_state.alert.d  = 1'b1;
-  assign hw2reg.nmi_state.alert.de = alert_irq_nm;
   assign hw2reg.nmi_state.wdog.d   = 1'b1;
   assign hw2reg.nmi_state.wdog.de  = wdog_irq_nm;
 
@@ -737,55 +729,6 @@ module rv_core_ibex
   assign hw2reg.err_status.recov_core_err.d = 1'b1;
   assign hw2reg.err_status.recov_core_err.de = recov_core_err;
 
-  ///////////////////////
-  // Alert generation
-  ///////////////////////
-
-  logic [NumAlerts-1:0] alert_test;
-  assign alert_test[0] = reg2hw.alert_test.fatal_sw_err.q &
-                         reg2hw.alert_test.fatal_sw_err.qe;
-  assign alert_test[1] = reg2hw.alert_test.recov_sw_err.q &
-                         reg2hw.alert_test.recov_sw_err.qe;
-  assign alert_test[2] = reg2hw.alert_test.fatal_hw_err.q &
-                         reg2hw.alert_test.fatal_hw_err.qe;
-  assign alert_test[3] = reg2hw.alert_test.recov_hw_err.q &
-                         reg2hw.alert_test.recov_hw_err.qe;
-
-  localparam bit [3:0] AlertFatal = '{1'b0, 1'b1, 1'b0, 1'b1};
-
-  logic [NumAlerts-1:0] alert_events;
-  logic [NumAlerts-1:0] alert_acks;
-
-  import prim_mubi_pkg::mubi4_test_true_loose;
-  import prim_mubi_pkg::mubi4_t;
-  assign alert_events[0] = mubi4_test_true_loose(mubi4_t'(reg2hw.sw_fatal_err.q));
-  assign alert_events[1] = mubi4_test_true_loose(mubi4_t'(reg2hw.sw_recov_err.q));
-  assign alert_events[2] = intg_err | fatal_intg_err | fatal_core_err;
-  assign alert_events[3] = recov_core_err;
-
-  logic unused_alert_acks;
-  assign unused_alert_acks = |alert_acks;
-
-  // recoverable alerts are sent once and silenced until activated again.
-  assign hw2reg.sw_recov_err.de = alert_acks[1];
-  assign hw2reg.sw_recov_err.d = prim_mubi_pkg::MuBi4False;
-
-  for (genvar i = 0; i < NumAlerts; i++) begin : gen_alert_senders
-    prim_alert_sender #(
-      .AsyncOn(AlertAsyncOn[0]),
-      .IsFatal(AlertFatal[i])
-    ) u_alert_sender (
-      .clk_i,
-      .rst_ni,
-      .alert_test_i(alert_test[i]),
-      .alert_req_i(alert_events[i]),
-      .alert_ack_o(alert_acks[i]),
-      .alert_state_o(),
-      .alert_rx_i(alert_rx_i[i]),
-      .alert_tx_o(alert_tx_o[i])
-    );
-  end
-
   //////////////
   // RND Data //
   //////////////
@@ -933,17 +876,6 @@ module rv_core_ibex
        $past(lc_ctrl_pkg::lc_tx_test_true_strict(pwrmgr_cpu_en_i), 3)) &&
       $past(!fatal_core_err))
 
-  // Alert assertions for reg_we onehot check
-  `ASSERT_PRIM_REG_WE_ONEHOT_ERROR_TRIGGER_ALERT(RegWeOnehotCheck_A, u_reg_cfg, alert_tx_o[2])
-  `ASSERT_PRIM_ONEHOT_ERROR_TRIGGER_ALERT(RvCoreRegWeOnehotCheck_A,
-      u_core.gen_regfile_ff.register_file_i.gen_wren_check.u_prim_onehot_check, alert_tx_o[2])
-  `ASSERT_PRIM_ONEHOT_ERROR_TRIGGER_ALERT(RvCoreRegWeOnehotCheckRAddrA_A,
-        u_core.gen_regfile_ff.register_file_i.gen_rdata_mux_check.u_prim_onehot_check_raddr_a,
-        alert_tx_o[2])
-  `ASSERT_PRIM_ONEHOT_ERROR_TRIGGER_ALERT(RvCoreRegWeOnehotCheckRAddrB_A,
-        u_core.gen_regfile_ff.register_file_i.gen_rdata_mux_check.u_prim_onehot_check_raddr_b,
-        alert_tx_o[2])
-
 `ifdef INC_ASSERT
   if (ICache && ICacheScramble) begin : gen_icache_scramble_asserts
 
@@ -980,31 +912,6 @@ module rv_core_ibex
     )
 
   end
-
-  `define ASSERT_IBEX_CORE_ERROR_TRIGGER_ALERT(__assert_name, __alert_name, _hier, __error_name)   \
-    if (1) begin : g_``__error_name``_assert_signals                                               \
-      logic __error_name;                                                                          \
-      assign __error_name = u_core._hier``.__error_name;                                           \
-                                                                                                   \
-      logic unused_assert_connected;                                                               \
-      `ASSERT_INIT_NET(AssertConnected_A, unused_assert_connected === 1'b1)                        \
-    end                                                                                            \
-    `ASSERT_ERROR_TRIGGER_ALERT(__assert_name, g_``__error_name``_assert_signals, __alert_name, 0, \
-        30, // MAX_CYCLES_, use a large value as ibex clock is 4x faster than clk in alert_handler \
-        __error_name)
-
-  `ASSERT_IBEX_CORE_ERROR_TRIGGER_ALERT(IbexPcMismatchCheck_A, alert_tx_o[2],
-      u_ibex_core.if_stage_i, pc_mismatch_alert_o)
-  `ASSERT_IBEX_CORE_ERROR_TRIGGER_ALERT(IbexRfEccErrCheck_A, alert_tx_o[2], u_ibex_core,
-      rf_ecc_err_comb)
-  `ASSERT_IBEX_CORE_ERROR_TRIGGER_ALERT(IbexLoadRespIntgErrCheck_A, alert_tx_o[2], u_ibex_core,
-      lsu_load_resp_intg_err)
-  `ASSERT_IBEX_CORE_ERROR_TRIGGER_ALERT(IbexStoreRespIntgErrCheck_A, alert_tx_o[2], u_ibex_core,
-      lsu_store_resp_intg_err)
-  `ASSERT_IBEX_CORE_ERROR_TRIGGER_ALERT(IbexInstrIntgErrCheck_A, alert_tx_o[2], u_ibex_core,
-      instr_intg_err)
-  `ASSERT_PRIM_COUNT_ERROR_TRIGGER_ALERT(IbexLockstepResetCountAlertCheck_A,
-      u_core.gen_lockstep.u_ibex_lockstep.u_rst_shadow_cnt, alert_tx_o[2])
 
 `endif // ifdef INC_ASSERT
 endmodule
