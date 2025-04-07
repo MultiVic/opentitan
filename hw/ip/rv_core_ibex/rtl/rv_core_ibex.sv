@@ -223,30 +223,16 @@ module rv_core_ibex
   // Reset feedback to clkmgr
   assign rst_cpu_n_o = rst_ni;
 
-  // Escalation receiver that converts differential
-  // protocol into single ended signal.
-  logic esc_irq_nm;
-  prim_esc_receiver #(
-    .N_ESC_SEV   (alert_handler_reg_pkg::N_ESC_SEV),
-    .PING_CNT_DW (alert_handler_reg_pkg::PING_CNT_DW)
-  ) u_prim_esc_receiver (
-    .clk_i     ( clk_esc_i  ),
-    .rst_ni    ( rst_esc_ni ),
-    .esc_req_o ( esc_irq_nm ),
-    .esc_rx_o,
-    .esc_tx_i
-  );
-
-  // Synchronize to fast Ibex clock domain.
-  logic alert_irq_nm;
-  prim_flop_2sync #(
-    .Width(1)
-  ) u_alert_nmi_sync (
-    .clk_i,
-    .rst_ni,
-    .d_i(esc_irq_nm),
-    .q_o(alert_irq_nm)
-  );
+  // // Synchronize to fast Ibex clock domain.
+  // logic alert_irq_nm;
+  // prim_flop_2sync #(
+  //   .Width(1)
+  // ) u_alert_nmi_sync (
+  //   .clk_i,
+  //   .rst_ni,
+  //   .d_i(esc_irq_nm),
+  //   .q_o(alert_irq_nm)
+  // );
 
   logic wdog_irq_nm;
   prim_flop_2sync #(
@@ -308,33 +294,6 @@ module rv_core_ibex
             irq_external})
   );
 
-
-  logic key_req, key_ack;
-  logic [ibex_pkg::SCRAMBLE_KEY_W-1:0] key;
-  logic [ibex_pkg::SCRAMBLE_NONCE_W-1:0] nonce;
-  logic unused_seed_valid;
-  localparam int PayLoadW = ibex_pkg::SCRAMBLE_KEY_W + ibex_pkg::SCRAMBLE_NONCE_W + 1;
-  prim_sync_reqack_data #(
-    .Width(PayLoadW),
-    .DataSrc2Dst(1'b0)
-  ) u_prim_sync_reqack_data (
-    .clk_src_i  ( clk_i                         ),
-    .rst_src_ni ( rst_ni                        ),
-    .clk_dst_i  ( clk_otp_i                     ),
-    .rst_dst_ni ( rst_otp_ni                    ),
-    .req_chk_i  ( 1'b1                          ),
-    .src_req_i  ( key_req                       ),
-    .src_ack_o  ( key_ack                       ),
-    .dst_req_o  ( icache_otp_key_o.req          ),
-    .dst_ack_i  ( icache_otp_key_i.ack          ),
-    .data_i     ( {icache_otp_key_i.key,
-                   icache_otp_key_i.nonce[ibex_pkg::SCRAMBLE_NONCE_W-1:0],
-                   icache_otp_key_i.seed_valid} ),
-    .data_o     ( {key,
-                   nonce,
-                   unused_seed_valid}           )
-  );
-
   logic unused_nonce;
   assign unused_nonce = |icache_otp_key_i.nonce;
 
@@ -354,12 +313,6 @@ module rv_core_ibex
     .lc_en_o(local_fetch_enable_q)
   );
 
-  // Multibit AND computation for fetch enable. Fetch is only enabled when local fetch enable,
-  // lifecycle CPU enable and power manager CPU enable are all enabled.
-  lc_ctrl_pkg::lc_tx_t fetch_enable;
-  assign fetch_enable = lc_ctrl_pkg::lc_tx_and_hi(local_fetch_enable_q,
-                                                  lc_ctrl_pkg::lc_tx_and_hi(lc_cpu_en[0],
-                                                                            pwrmgr_cpu_en[0]));
 
   ibex_pkg::crash_dump_t crash_dump;
   ibex_top #(
@@ -446,10 +399,10 @@ module rv_core_ibex
     .crash_dump_o       ( crash_dump       ),
 
     // icache scramble interface
-    .scramble_key_valid_i (key_ack),
-    .scramble_key_i       (key),
-    .scramble_nonce_i     (nonce),
-    .scramble_req_o       (key_req),
+    .scramble_key_valid_i (1'b0),
+    .scramble_key_i       (128'h0),
+    .scramble_nonce_i     (64'h0),
+    .scramble_req_o       (),
 
     // double fault
     .double_fault_seen_o  (double_fault),
@@ -480,30 +433,12 @@ module rv_core_ibex
     .rvfi_mem_wdata,
 `endif
     // SEC_CM: FETCH.CTRL.LC_GATED
-    .fetch_enable_i         (fetch_enable),
+    .fetch_enable_i         (ibex_pkg::IbexMuBiOn),
     .alert_minor_o          (alert_minor),
     .alert_major_internal_o (alert_major_internal),
     .alert_major_bus_o      (alert_major_bus),
     .core_sleep_o           (core_sleep)
   );
-
-  logic core_sleep_q;
-  always_ff @(posedge clk_i or negedge rst_ni) begin
-    if (!rst_ni) begin
-      core_sleep_q <= '0;
-    end else begin
-      core_sleep_q <= core_sleep;
-    end
-  end
-
-  prim_buf #(
-    .Width(1)
-  ) u_core_sleeping_buf (
-    .in_i(core_sleep_q),
-    .out_o(pwrmgr_o.core_sleeping)
-  );
-
-
 
   logic prev_valid;
   logic [31:0] prev_exception_pc;
