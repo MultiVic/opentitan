@@ -19,8 +19,17 @@ filesets:
       - pulp_riscv_dbg/src/dm_mem.sv
       - pulp_riscv_dbg/src/dmi_cdc.sv
       - pulp_riscv_dbg/src/dmi_jtag.sv
-      - pulp_riscv_dbg/src/dmi_jtag_tap.sv
       - pulp_riscv_dbg/src/dm_top.sv
+    file_type: systemVerilogSource
+
+  files_jtag_tap:
+    files:
+      - pulp_riscv_dbg/src/dmi_jtag_tap.sv
+    file_type: systemVerilogSource
+
+  files_bscane_tap:
+    files:
+      - pulp_riscv_dbg/src/dmi_bscane_tap.sv
     file_type: systemVerilogSource
 
   files_verilator_waiver:
@@ -33,3 +42,5 @@ targets:
     filesets:
       - tool_verilator ? (files_verilator_waiver)
       - files_src
+      - "use_bscane_tap ? (files_bscane_tap)"
+      - "!use_bscane_tap ? (files_jtag_tap)"
