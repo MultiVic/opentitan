@@ -13,6 +13,9 @@ quality, open IP for instantiation as a full-featured product. See the
 [OpenTitan site](https://opentitan.org/) and [OpenTitan
 docs](https://opentitan.org/book) for more information about the project.
 
+> [Note]
+> This repository is a fork of [lowRISC/opentitan](https://github.com/lowRISC/opentitan). We use several IPs from opentitan in MultiVic and have made modifications to suit our needs. We mainly use the tlul (TileLink Uncached-Lightweight) modules and the dma. The ibex from this repository is used for the MultiVic management core.
+
 ## About this repository
 
 This repository contains hardware, software and utilities written as part of the
